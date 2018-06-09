@@ -1,0 +1,23 @@
+{
+  "author": "Miikka Kulmala",
+  "homepage_url": "https://github.com/milzer/firefox-link-filter",
+  "manifest_version": 2,
+  "name": "Link Filter",
+  "version": "1.0",
+
+  "description": "Filters links",
+
+  "icons": {
+    "48": "icons/link-filter.svg"
+  },
+
+  "permissions": [
+    "activeTab"
+  ],
+
+  "browser_action": {
+    "default_icon": "icons/link-filter.svg",
+    "default_title": "Link Filter",
+    "default_popup": "popup/link-filter.html"
+  }
+}
