@@ -22,15 +22,22 @@ const _getLinks = (tab) => (callback) => {
     .catch(reportError);
 }
 
-const _setUrl = (tab) => (url, callback) => {
-  browser.tabs.update(tab.id, {url})
-    .then(callback)
-    .catch(reportError);
+const _setUrl = (tab) => (url, callback, newTab) => {
+  if (newTab) {
+    browser.tabs.create({active: false, url})
+      .then(() => {})
+      .catch(reportError);
+  }
+  else {
+    browser.tabs.update(tab.id, {url})
+      .then(callback)
+      .catch(reportError);
+  }
 }
 
 const _onLinkClick = (tab, navigate) => (e) => {
   e.preventDefault();
-  navigate(e.target.href, window.close);
+  navigate(e.target.href, window.close, e.ctrlKey || e.metaKey);
 }
 
 const render = (links, onLinkClick) => {
