@@ -54,13 +54,27 @@ const render = (links, onLinkClick) => {
 }
 
 const filter = (filter, links) => {
+  /*
   return !!filter ?
     links.filter((link) => link.text.toLowerCase().includes(filter.toLowerCase())) :
-    links;
+    links; */
+
+  // Treating filter as a regular expression
+
+  if (!filter || !filter.length) {
+    filter = ".*";
+  }
+  const re = new RegExp(filter, "gi");
+  return !!re ?
+    links.filter(((link) => {
+      const linktext = link.text;
+      return re.test(linktext);
+    })) : links;
 }
 
 const _update = (links, onLinkClick) => () => {
   const filterInput = document.getElementById('input-filter');
+  chrome.storage.local.set({"filter": filterInput.value});
   const filtered = filter(filterInput.value, links);
   render(filtered, onLinkClick);
 }
@@ -81,6 +95,13 @@ const init = ([tab]) => {
   getLinks(({links}) => {
     update = _update(links, onLinkClick);
     update();
+  });
+
+  // Restore the contents of the input from last
+  // time we were open
+  
+  chrome.storage.local.get("filter", function(result) {
+    filterInput.value = result.filter || "";
   });
 }
 

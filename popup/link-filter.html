@@ -10,16 +10,24 @@
 
 <body>
   <div id="popup-content">
+    <div class="info-box">
+      <h1>Filter Links</h1>
+      <p>Filter using regular expression syntax.</p>
+    </div>
     <div class="segment" id="controls">
-      <input
-        class="field"
-        id="input-filter"
-        placeholder="filter"
-        autofocus
-        type="text"
-        name="filter" />
+      <label>
+        Regexp:
+        <input
+          class="field"
+          id="input-filter"
+          placeholder="filter"
+          autofocus
+          type="search"
+          name="filter" />
+      </label>
     </div>
     <div class="segment" id="results">
+      <h1>Matching links:</h1>
     </div>
   </div>
   <div id="error-content" class="hidden segment">
