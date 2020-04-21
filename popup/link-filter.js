@@ -1,8 +1,8 @@
 const reportError = (error) => {
-  document.querySelector("#popup-content").classList.add("hidden");
-  const errorEl = document.querySelector("#error-content");
+  document.querySelector('#popup-content').classList.add('hidden');
+  const errorEl = document.querySelector('#error-content');
   errorEl.innerText = error;
-  errorEl.classList.remove("hidden");
+  errorEl.classList.remove('hidden');
 }
 
 const createLinkEl = (link, onClick, parent) => {
@@ -62,9 +62,9 @@ const filter = (filter, links) => {
   // Treating filter as a regular expression
 
   if (!filter || !filter.length) {
-    filter = ".*";
+    filter = '.*';
   }
-  const re = new RegExp(filter, "gi");
+  const re = new RegExp(filter, 'gi');
   return !!re ?
     links.filter(((link) => {
       const linktext = link.text;
@@ -74,7 +74,7 @@ const filter = (filter, links) => {
 
 const _update = (links, onLinkClick) => () => {
   const filterInput = document.getElementById('input-filter');
-  chrome.storage.local.set({"filter": filterInput.value});
+  chrome.storage.local.set({'filter': filterInput.value});
   const filtered = filter(filterInput.value, links);
   render(filtered, onLinkClick);
 }
@@ -99,15 +99,15 @@ const init = ([tab]) => {
 
   // Restore the contents of the input from last
   // time we were open
-  
-  chrome.storage.local.get("filter", function(result) {
-    filterInput.value = result.filter || "";
+
+  chrome.storage.local.get('filter', function(result) {
+    filterInput.value = result.filter || '';
   });
 }
 
 browser
   .tabs
-  .executeScript({file: "/content_scripts/link-filter.js"})
+  .executeScript({file: '/content_scripts/link-filter.js'})
   .then(() => {
     browser
       .tabs
