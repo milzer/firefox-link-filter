@@ -15,9 +15,9 @@
     return 0;
   };
 
-  const filterLinks = ({text}, idx, ary) => {
+  const filterLinks = ({text}, idx, arr) => {
     if (text && text !== '#') {
-      return !idx || text != ary[idx - 1].text;
+      return !idx || text != arr[idx - 1].text;
     }
     return false;
   }
@@ -25,8 +25,9 @@
   const cmpIndex = (a, b) => (a.index - b.index);
 
   const getLinks = () => {
-    const ary = Array.from(document.getElementsByTagName('a'));
-    const raw = ary.map(({href, innerText}, index) => ({
+    const arr = Array.from(document.links)
+      .filter(({href}) => !href.startsWith('javascript'));
+    const raw = arr.map(({href, innerText}, index) => ({
       href,
       index,
       text: innerText
