@@ -23,6 +23,11 @@ li {
   padding: 4px;
 }
 
+.segment.row {
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
 .segment > h1 {
   font-size: 1.3em;
 }

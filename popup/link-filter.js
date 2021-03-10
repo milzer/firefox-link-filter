@@ -40,27 +40,32 @@ const _onLinkClick = (tab, navigate) => (e) => {
   navigate(e.target.href, window.close, e.ctrlKey || e.metaKey);
 }
 
+const _writeToClipboard = (text) => {
+  navigator.clipboard.writeText(text).then(
+    () => {},
+    () => {
+      reportError('Copy failed');
+    });
+}
+
 const render = (links, onLinkClick) => {
   const results = document.getElementById('results');
   while (results.firstChild) {
     results.removeChild(results.firstChild);
   }
 
+  const tools = document.getElementById('tools');
+
   if (links.length > 0) {
+    tools.classList.remove('hidden')
     links.forEach((link) => createLinkEl(link, onLinkClick, results));
   } else {
+    tools.classList.add('hidden')
     results.innerHTML = '<p>No links</p>'
   }
 }
 
 const filter = (filter, links) => {
-  /*
-  return !!filter ?
-    links.filter((link) => link.text.toLowerCase().includes(filter.toLowerCase())) :
-    links; */
-
-  // Treating filter as a regular expression
-
   if (!filter || !filter.length) {
     filter = '.*';
   }
@@ -90,6 +95,22 @@ const init = ([tab]) => {
   filterInput.addEventListener('input', () => {
     clearTimeout(filterTimeout);
     filterTimeout = setTimeout(update, 100);
+  });
+
+  const copyUrlsButton = document.getElementById('copy-urls-button');
+  copyUrlsButton.addEventListener('click', () => {
+    links = Array.from(document.links)
+      .map((link) => link.href)
+      .join('\n');
+    _writeToClipboard(links);
+  });
+
+  const copyHtmlButton = document.getElementById('copy-html-button');
+  copyHtmlButton.addEventListener('click', () => {
+    links = Array.from(document.links)
+      .map((link) => `<a href='${link.href}'>${link.text.trim()}</a>`)
+      .join('\n');
+    _writeToClipboard(links);
   });
 
   getLinks(({links}) => {
